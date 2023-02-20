@@ -206,7 +206,7 @@ while r:
     
     print(player.velocity[1])
     
-    # player.move(td, keys, all_sprites)
+    player.move(td, keys, all_blocksprites)
     # Draw player
     # s.blit(player.image, player.position)
     s.blit(player.image, player.draw_position())
