@@ -55,23 +55,23 @@ class Player(pygame.sprite.Sprite):
     counter = 1
 
     images = [
-        'img/TIM1.png',
-        'img/TIM2.png',
-        'img/TIM3.png',
-        'img/TIM4.png',
-        'img/TIM5.png',
-        'img/TIM6.png',
-        'img/TIM7.png',
+        'img/TiM1.png',
+        'img/TiM2.png',
+        'img/TiM3.png',
+        'img/TiM4.png',
+        'img/TiM5.png',
+        'img/TiM6.png',
+        'img/TiM7.png',
     ]
 
     images2 = [
-        'img/TIM1LEFT.png',
-        'img/TIM2LEFT.png',
-        'img/TIM3LEFT.png',
-        'img/TIM4LEFT.png',
-        'img/TIM5LEFT.png',
-        'img/TIM6LEFT.png',
-        'img/TIM7LEFT.png',
+        'img/TiM1LEFT.png',
+        'img/TiM2LEFT.png',
+        'img/TiM3LEFT.png',
+        'img/TiM4LEFT.png',
+        'img/TiM5LEFT.png',
+        'img/TiM6LEFT.png',
+        'img/TiM7LEFT.png',
     ]
 
     
@@ -81,7 +81,7 @@ class Player(pygame.sprite.Sprite):
 
         # Create an image of the block, and fill it with a color.
         # This could also be an image loaded from the disk.
-        self.image = pygame.image.load('img/TIM.png')
+        self.image = pygame.image.load('img/TiM.png')
 
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
@@ -151,10 +151,10 @@ class Player(pygame.sprite.Sprite):
                 player.velocity[0] = -max_run_vel
         
         # elif player.position[1] != hits:
-        #     self.image = pygame.image.load('img/TIM.png')
+        #     self.image = pygame.image.load('img/TiM.png')
                 
         else:
-            self.image = pygame.image.load('img/TIM.png')
+            self.image = pygame.image.load('img/TiM.png')
 
 
 
