@@ -11,5 +11,6 @@ BLOCKS = [
 GROUND=[
     vec(0,15), vec(36,16)
 ]
-FINISH = [vec (33,9)]
-START = [vec(0,14)]
+FINISH = vec (33,9)
+# START = vec(0,14)
+START = vec(15,5)
