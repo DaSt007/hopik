@@ -111,8 +111,8 @@ class Player(pygame.sprite.Sprite):
         self.velocity = [0, 0]
 
     def draw_position(self):
-        x = self.position[0] + self.image.get_width()/2
-        y = self.position[1] - self.image.get_height()
+        x = self.position[0]
+        y = self.position[1]
         return [x, y]
         
         
