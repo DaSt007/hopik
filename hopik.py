@@ -12,6 +12,8 @@ pygame.display.set_caption("Hopííík")
 # Set gravity strength
 GRAVITY = 50
 
+SCALE = 16
+
 # Set jumping strength
 jump_strength = -80
 
@@ -32,10 +34,18 @@ class Block(pygame.sprite.Sprite):
     def __init__(self, group, lefttop, rightbottom):
         pygame.sprite.Sprite.__init__(self, group)
         size = rightbottom - lefttop 
-        self.image = pygame.Surface(size * 32)
+        self.image = pygame.Surface(size * SCALE)
         self.image.fill((0, 200, 0))
-        self.rect = self.image.get_rect(topleft=lefttop * 32, bottomright=rightbottom * 32)
+        self.rect = self.image.get_rect(topleft=lefttop * SCALE, bottomright=rightbottom * SCALE)
 
+class Ground(pygame.sprite.Sprite):
+
+    def __init__(self, group, lefttop, rightbottom):
+        pygame.sprite.Sprite.__init__(self, group)
+        size = rightbottom - lefttop 
+        self.image = pygame.Surface(size * SCALE)
+        self.image.fill((0, 0, 200))
+        self.rect = self.image.get_rect(topleft=lefttop * SCALE, bottomright=rightbottom * SCALE)
 
 # class Layer(pygame.sprite.Sprite):
 #     def __init__(self):
@@ -167,6 +177,8 @@ playersprite = pygame.sprite.RenderPlain(player)
 all_blocksprites = pygame.sprite.Group()
 for block in BLOCKS:
     Block(all_blocksprites, lefttop=block[0], rightbottom=block[1])
+
+Ground(all_blocksprites, lefttop=GROUND[0], rightbottom=GROUND[1])
     
 # all_sprites = pygame.sprite.Group()
 # all_sprites.add(layer)
