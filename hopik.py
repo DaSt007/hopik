@@ -1,5 +1,5 @@
 import pygame
-from level01 import BLOCKS, START, FINISH, GROUND
+from level01 import BLOCKS, START, FINISH, BLOCK_TYPE_SOLID, BLOCK_TYPE_GROUND, BLOCK_TYPE_ELEVATOR
 
 # Initialize pygame
 pygame.init()
@@ -17,11 +17,17 @@ SCALE = 16
 
 BLOCKS_SCALED = []
 for block in BLOCKS:
-    BLOCKS_SCALED.append([vec(block[0][0] * SCALE, block[0][1] * SCALE), vec(block[1][0] * SCALE, block[1][1] * SCALE)])
+    BLOCKS_SCALED.append(
+        [
+            vec(block[0][0] * SCALE, block[0][1] * SCALE),
+            vec(block[1][0] * SCALE, block[1][1] * SCALE),
+            block[2]
+        ]
+    )
 BLOCKS = BLOCKS_SCALED
 
-GROUND_SCALED = ([vec(GROUND[0][0] * SCALE, GROUND[0][1] * SCALE), vec(GROUND[1][0] * SCALE, GROUND[1][1] * SCALE)])
-GROUND = GROUND_SCALED
+# GROUND_SCALED = ([vec(GROUND[0][0] * SCALE, GROUND[0][1] * SCALE), vec(GROUND[1][0] * SCALE, GROUND[1][1] * SCALE)])
+# GROUND = GROUND_SCALED
 
 START_SCALED = vec(START[0] * SCALE, START[1] * SCALE)
 START = START_SCALED
@@ -36,27 +42,35 @@ run_dec = 400
 
 
 # Set ground level
-GROUND_LEVEL = 480
+# GROUND_LEVEL = 480
 
 FPS = 60
 
 class Block(pygame.sprite.Sprite):
 
-    def __init__(self, group, lefttop, rightbottom):
+    def __init__(self, group, lefttop, rightbottom, block_type):
         pygame.sprite.Sprite.__init__(self, group)
         size = rightbottom - lefttop 
         self.image = pygame.Surface(size)
-        self.image.fill((0, 200, 0))
+
+        if block_type == BLOCK_TYPE_GROUND:
+            self.image.fill((0, 0, 200))
+        elif block_type == BLOCK_TYPE_SOLID:
+            self.image.fill((0, 200, 0))
+        elif block_type == BLOCK_TYPE_ELEVATOR:
+            self.image.fill((200, 0, 0))
+        else:
+            self.image.fill((50, 50, 50))
         self.rect = self.image.get_rect(topleft=lefttop, bottomright=rightbottom)
 
-class Ground(pygame.sprite.Sprite):
+# class Ground(pygame.sprite.Sprite):
 
-    def __init__(self, group, lefttop, rightbottom):
-        pygame.sprite.Sprite.__init__(self, group)
-        size = rightbottom - lefttop 
-        self.image = pygame.Surface(size)
-        self.image.fill((0, 0, 200))
-        self.rect = self.image.get_rect(topleft=lefttop, bottomright=rightbottom)
+#     def __init__(self, group, lefttop, rightbottom):
+#         pygame.sprite.Sprite.__init__(self, group)
+#         size = rightbottom - lefttop 
+#         self.image = pygame.Surface(size)
+#         self.image.fill((0, 0, 200))
+#         self.rect = self.image.get_rect(topleft=lefttop, bottomright=rightbottom)
 
 # class Layer(pygame.sprite.Sprite):
 #     def __init__(self):
@@ -204,9 +218,9 @@ playersprite = pygame.sprite.RenderPlain(player)
 
 all_blocksprites = pygame.sprite.Group()
 for block in BLOCKS:
-    Block(all_blocksprites, lefttop=block[0], rightbottom=block[1])
+    Block(all_blocksprites, lefttop=block[0], rightbottom=block[1], block_type=block[2])
 
-Ground(all_blocksprites, lefttop=GROUND[0], rightbottom=GROUND[1])
+# Ground(all_blocksprites, lefttop=GROUND[0], rightbottom=GROUND[1])
     
 # all_sprites = pygame.sprite.Group()
 # all_sprites.add(layer)
