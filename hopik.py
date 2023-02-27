@@ -11,7 +11,7 @@ pygame.display.set_caption("Hopííík")
 vec = pygame.math.Vector2 
 
 # Set gravity strength
-GRAVITY = 50
+GRAVITY = 100
 
 SCALE = 16
 
@@ -134,11 +134,23 @@ class Player(pygame.sprite.Sprite):
         if self.velocity[1] > 0:        
             if hits:
                 # Check if player is colliding with ground
+                # if self.velocity[1] < 0:
+                #     self.velocity[1] = 0
+                #     self.position[1] += 1
+                                            
+                # if self.velocity[1] > 0:
+                #     self.velocity[1] = 0
+                #     self.position[1] -= 1 
+                                                                   
+                # if self.velocity[0] < 0:
+                #     self.velocity[0] = 0
+                #     self.position[0] += 1 
+                                           
+                # if self.velocity[0] > 0:
+                #     self.velocity[0] = 0
+                #     self.position[0] -= 1
                 self.velocity[1] = 0
                 self.position[1] -= 1
-            if self.position[1] > GROUND_LEVEL:
-                self.position[1] = GROUND_LEVEL
-                self.velocity[1] = 0
                 
         if self.velocity[0] > 0 and not keys[pygame.K_RIGHT]:
             self.velocity[0] -= run_dec * td
@@ -152,7 +164,7 @@ class Player(pygame.sprite.Sprite):
 
         # Check if player is jumping
 
-        if keys[pygame.K_UP] and self.position[1] == GROUND_LEVEL:
+        if keys[pygame.K_UP]:
             self.velocity[1] = jump_strength
         # Check if player is going right
         elif keys[pygame.K_RIGHT]:
@@ -180,6 +192,7 @@ class Player(pygame.sprite.Sprite):
                 
         else:
             self.image = pygame.image.load('img/TiM.png')
+            self.image2 = pygame.image.load('img/Outline.png')
 
 
 
@@ -223,6 +236,7 @@ while r:
     # Draw player
     # s.blit(player.image, player.position)
     s.blit(player.image, player.draw_position())
+    s.blit(player.image2, player.draw_position())
     
     for entity in all_blocksprites:
         s.blit(entity.image, entity.rect)
