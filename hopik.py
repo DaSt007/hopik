@@ -25,7 +25,8 @@ level_list = [
     "leveldostansekedverim",
     "levelpozornahlavu",
     "levelsorlojem",
-    "levelkonec"
+    "lojzuvlevel",
+    "levelkonec",
 ]
 
 pygame.font.init() # you have to call this at the start, 
