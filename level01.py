@@ -6,7 +6,7 @@ BLOCK_TYPE_SOLID = 2
 BLOCK_TYPE_ELEVATOR = 3
 
 BLOCKS = [
-    [vec(0,15), vec(36,16), BLOCK_TYPE_GROUND],
+    [vec(0,15), vec(50,16), BLOCK_TYPE_GROUND],
 
     [vec(10,14), vec(11,15), BLOCK_TYPE_SOLID],
     [vec(13,13), vec(14,14), BLOCK_TYPE_ELEVATOR],
