@@ -101,6 +101,9 @@ class Player(pygame.sprite.Sprite):
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect(center = (self.image.get_width()/2, self.image.get_height()))
+        
+        # self.rect.left = self.rect.left + 10
+        # self.rect.right = self.rect.right - 10
         self.position = [START.x, START.y]
         self.velocity = [0, 0]
 
@@ -112,44 +115,124 @@ class Player(pygame.sprite.Sprite):
         
 
     def move(self, td, keys, all_sprites):
-            
-
         self.image = pygame.image.load('img/TiM.png')
 
         # Apply gravity to player's velocity
-        self.velocity[1] += GRAVITY * td
-       
-        # Update player's position based on velocity
-        self.position[0] += self.velocity[0] * td
-        self.position[1] += self.velocity[1] * td
-        self.rect.x = self.position[0]
-        self.rect.y = self.position[1]
-        
+        self.velocity[1] += GRAVITY * td    
+              
         # Check if player is colliding with block
         hits = pygame.sprite.spritecollide(self, all_sprites, False)
         print(hits, self.rect)
         
-        if self.velocity[1] > 0:        
-            if hits:
-                # Check if player is colliding with ground
-                # if self.velocity[1] < 0:
-                #     self.velocity[1] = 0
-                #     self.position[1] += 1
-                                            
-                # if self.velocity[1] > 0:
-                #     self.velocity[1] = 0
-                #     self.position[1] -= 1 
-                                                                   
-                # if self.velocity[0] < 0:
-                #     self.velocity[0] = 0
-                #     self.position[0] += 1 
-                                           
-                # if self.velocity[0] > 0:
-                #     self.velocity[0] = 0
-                #     self.position[0] -= 1
-                self.velocity[1] = 0
-                self.position[1] -= 1
+        move_ignore_up = False
+        move_ignore_down = False
+        move_ignore_left = False
+        move_ignore_right = False
+        
+        
+        if hits:
+            for h in hits:
+                tl = h.rect.collidepoint(self.rect.topleft)
+                tr = h.rect.collidepoint(self.rect.topright)
+                bl = h.rect.collidepoint(self.rect.bottomleft)
+                br = h.rect.collidepoint(self.rect.bottomright)
+                
+                col_t = h.rect.colliderect(pygame.Rect(self.rect.top+1, self.rect.left+1, self.rect.width-2, 0))
+                col_r = h.rect.colliderect(pygame.Rect(self.rect.top+1, self.rect.left+1+self.rect.width, 0, self.rect.height-2))
+                col_b = h.rect.colliderect(pygame.Rect(self.rect.top+1+self.rect.height, self.rect.left+1, self.rect.width-2, 0))
+                col_l = h.rect.colliderect(pygame.Rect(self.rect.top+1, self.rect.left+1, 0, self.rect.height-2))
+                
+                
+                print(tl, tr, bl, br)
+                if tl and tr and bl and br:
+                    # Player is inside block
+                    print("Player is inside a block")
+                    pass
+                
+                elif col_t or (tl and tr):
+                    # Player is hitting block from bottom
+                    move_ignore_up = True
+                    
+                elif col_r or (tr and br):
+                    # Player is hitting block from left
+                    move_ignore_right = True
+                
+                elif col_b or (br and bl):
+                    # Player is hitting block from top
+                    move_ignore_down = True
+                    
+                elif col_l or (tl and bl):
+                    # Player is hitting block from right
+                    move_ignore_left = True
+                
+                elif tl:
+                    # Player is hitting block from bottom right
+                    move_ignore_left = True
+                    move_ignore_up = True
+                
+                elif tr:
+                    # Player is hitting block from bottom left
+                    move_ignore_up = True
+                    move_ignore_right = True
+                    
+                elif br:
+                    # Player is hitting block from top left
+                    move_ignore_down = True
+                    move_ignore_right = True
+                
+                elif bl:
+                    # Player is hitting block from top right
+                    move_ignore_left = True
+                    move_ignore_down = True
+                
+                else:
+                    # Block is in player
+                    print("Block is inside a player")
+                    exit
+                # This is elevator 
+            # if self.velocity[1] > 0:        
+
+            #     self.velocity[1] = 0
+            #     self.position[1] -= 1
             
+            
+
+        # Update player's position based on velocity
+        dx = self.velocity[0] * td
+        dy = self.velocity[1] * td
+        
+        if dx > 0:
+            # Moving right
+            if move_ignore_right:
+                dx = 0  
+                          
+        if dx < 0:
+            # Moving left
+            if move_ignore_left:
+                dx = 0  
+                          
+        if dy > 0:
+            # Moving down
+            if move_ignore_down:
+                dy = 0     
+                       
+        if dy < 0:
+            # Moving up
+            if move_ignore_up:
+                dy = 0            
+        
+        
+        
+        self.position[0] += dx
+        self.position[1] += dy
+
+        self.rect.x = self.position[0]
+        self.rect.y = self.position[1]
+        
+        
+        
+        
+        
         # Check if player is decelerating    
         if self.velocity[0] > 0 and not keys[pygame.K_RIGHT]:
             self.velocity[0] -= run_dec * td
