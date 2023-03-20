@@ -4,10 +4,11 @@ vec = pygame.math.Vector2
 
 
 BLOCKS = [
-    [vec(0,15), vec(50,16), BLOCK_TYPE_GROUND],
-
+    [vec(0,15), vec(41,16), BLOCK_TYPE_GROUND],
+    [vec(0,0), vec(1,15), BLOCK_TYPE_GROUND],
+    [vec(38,10), vec(40,15), BLOCK_TYPE_GROUND],
     [vec(10,14), vec(11,15), BLOCK_TYPE_SOLID],
-    [vec(13,13), vec(14,14), BLOCK_TYPE_SOLID],
+    [vec(13,13), vec(14,14), BLOCK_TYPE_ELEVATOR],
     [vec(16,12), vec(20,13), BLOCK_TYPE_SOLID],
     # [vec(16,13), vec(17,15), BLOCK_TYPE_SOLID],
     [vec(23,11), vec(26,12), BLOCK_TYPE_SOLID],
@@ -15,7 +16,7 @@ BLOCKS = [
 ]
 
 FINISH = vec (33,8)
-START = vec(0,14)
+START = vec(2,12)
 # START = vec(15,5)
 
 
