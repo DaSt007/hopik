@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from level01 import *
+from level import *
 from blocks import Block
 from player import Player
 

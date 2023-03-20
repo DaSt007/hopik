@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from level01 import START
+from level import START
 from collections import deque
 
 right_animation = [
