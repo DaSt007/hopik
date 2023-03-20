@@ -26,10 +26,13 @@ pygame.font.init() # you have to call this at the start,
                    # if you want to use this module.
 my_font = pygame.font.SysFont('Arial', 12)
 
+finish_image = pygame.image.load('img/finish7.png')
+
 # Game loop
 r = True
 # Initialise clock
 clock = pygame.time.Clock()
+
 # Event loop
 while r:
     # Make sure game doesn't run at more than 60 frames per second
@@ -41,13 +44,15 @@ while r:
 
     s.fill((0,0,0))
     pygame.display.set_caption(f'{clock.get_fps() :.1f}')
-
+      
     keys = pygame.key.get_pressed()
-       
+
     player.move(td, keys, all_blocksprites)
     # Draw player
     s.blit(player.image, player.draw_position())
     s.blit(player.image2, player.draw_position())
+    
+    s.blit(finish_image, FINISH)
     
     for entity in all_blocksprites:
         s.blit(entity.image, entity.rect)

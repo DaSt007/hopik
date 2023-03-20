@@ -1,31 +1,49 @@
 import pygame
 from settings import *
 from level01 import START
+from collections import deque
+
+right_animation = [
+    'img/TiM3.png',
+    'img/TiM2.png',
+    'img/TiM1.png',
+    'img/TiM2.png',
+    'img/TiM3.png',
+    'img/TiM4.png',
+    'img/TiM5.png',
+    'img/TiM6.png',
+]
+
+left_animation = [
+    'img/TiM3LEFT.png',
+    'img/TiM2LEFT.png',
+    'img/TiM1LEFT.png',
+    'img/TiM2LEFT.png',
+    'img/TiM3LEFT.png',
+    'img/TiM4LEFT.png',
+    'img/TiM5LEFT.png',
+    'img/TiM6LEFT.png',
+]
+
+idle_animation = [
+
+    'img/TiM7LEFT.png',
+    'img/TiM7LEFT.png',
+    'img/TiM7LEFT.png',
+    'img/TiM7LEFT.png',
+    'img/TiM7LEFT.png',
+
+    'img/TiM7.png',
+    'img/TiM7.png',
+    'img/TiM7.png',
+    'img/TiM7.png',    
+    'img/TiM7.png',
+]
 
 class Player(pygame.sprite.Sprite):
-    counter = 1
-
-    images = [
-        'img/TiM1.png',
-        'img/TiM2.png',
-        'img/TiM3.png',
-        'img/TiM4.png',
-        'img/TiM5.png',
-        'img/TiM6.png',
-        'img/TiM7.png',
-    ]
-
-    images2 = [
-        'img/TiM1LEFT.png',
-        'img/TiM2LEFT.png',
-        'img/TiM3LEFT.png',
-        'img/TiM4LEFT.png',
-        'img/TiM5LEFT.png',
-        'img/TiM6LEFT.png',
-        'img/TiM7LEFT.png',
-    ]
-
     
+
+
     def __init__(self):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
@@ -36,7 +54,10 @@ class Player(pygame.sprite.Sprite):
         # Fetch the rectangle object that has the dimensions of the image
         # Update the position of this object by setting the values of rect.x and rect.y
         self.rect = self.image.get_rect(center = (self.image.get_width()/2, self.image.get_height()))
-        
+        self.images_left = self.get_images(left_animation)
+        self.images_right = self.get_images(right_animation)
+        self.images_idle = self.get_images(idle_animation)
+
         # self.rect.left = self.rect.left + 10
         # self.rect.right = self.rect.right - 10
         self.position = [START.x, START.y]
@@ -44,16 +65,24 @@ class Player(pygame.sprite.Sprite):
         self.bounds = []
         self.debug_text = ""
 
+        self.last_update = pygame.time.get_ticks()
+
+
     def draw_position(self):
         x = self.position[0]
         y = self.position[1]
         return [x, y]
         
-        
+
+    def get_images(self, path_list):
+        images = deque()
+        for file_name in path_list:
+            img = pygame.image.load(file_name).convert_alpha()
+            images.append(img)
+        return images        
 
     def move(self, td, keys, all_sprites):
         self.bounds = []
-        self.image = pygame.image.load('img/TiM.png')
 
         # Apply gravity to player's velocity
         self.velocity[1] += GRAVITY * td    
@@ -210,11 +239,7 @@ class Player(pygame.sprite.Sprite):
         
 
         self.rect.x = self.position[0]
-        self.rect.y = self.position[1]
-        
-        
-        
-        
+        self.rect.y = self.position[1]        
         
         # Check if player is decelerating    
         if self.velocity[0] > 0 and not keys[pygame.K_RIGHT]:
@@ -232,14 +257,12 @@ class Player(pygame.sprite.Sprite):
             self.position = [START.x, START.y]
             self.velocity = [0, 0]
         # Check if player is jumping
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and move_ignore_down:
             self.velocity[1] = jump_strength
-        
+
         # Check if player is going right
         if keys[pygame.K_RIGHT]:
-            self.image = pygame.image.load(self.images[self.counter])
-            self.counter = (self.counter + 1) % len(self.images)
-    
+
             if self.velocity[0] < 0:
                 self.velocity[0] = 0
             self.velocity[0] += run_acc * td
@@ -248,14 +271,24 @@ class Player(pygame.sprite.Sprite):
         
         # Check if player is going left
         if keys[pygame.K_LEFT]:
-            self.image = pygame.image.load(self.images2[self.counter])
-            self.counter = (self.counter + 1) % len(self.images2)
-            
+         
             if self.velocity[0] > 0:
                 self.velocity[0] = 0
             self.velocity[0] -= run_acc * td
             if self.velocity[0] < -max_run_vel:
                 self.velocity[0] = -max_run_vel
         
-        # elif self.position[1] != hits:
-        #     self.image = pygame.image.load('img/TiM.png')
+        # Update animation
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_update >= ANIMATION_COOLDOWN:
+
+            self.last_update = current_time
+            if keys[pygame.K_RIGHT]:
+                self.images_right.rotate(-1)
+                self.image = self.images_right[0]
+            elif keys[pygame.K_LEFT]:    
+                self.images_left.rotate(-1)
+                self.image = self.images_left[0]
+            else:
+                self.images_idle.rotate(-1)
+                self.image = self.images_idle[0]

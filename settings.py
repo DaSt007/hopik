@@ -18,8 +18,12 @@ run_acc = 400
 run_dec = 400
 
 # Set FPS of game
-FPS = 20
+FPS = 200
+
+ANIMATION_COOLDOWN = 50
+
 
 BLOCK_TYPE_GROUND = 1
 BLOCK_TYPE_SOLID = 2
 BLOCK_TYPE_ELEVATOR = 3
+
