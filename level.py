@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from level01 import RAW_BLOCKS
+from level02 import RAW_BLOCKS
 vec = pygame.math.Vector2
 
 
