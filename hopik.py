@@ -32,6 +32,8 @@ finish_image = pygame.image.load('img/finish7.png')
 r = True
 # Initialise clock
 clock = pygame.time.Clock()
+debug_visible = False
+debug_pressed = False
 
 # Event loop
 while r:
@@ -47,6 +49,13 @@ while r:
       
     keys = pygame.key.get_pressed()
 
+    if keys[pygame.K_d]:
+        if not debug_pressed:
+            debug_visible = not debug_visible
+        debug_pressed = True
+    else:
+        debug_pressed = False
+            
     player.move(td, keys, all_blocksprites)
     # Draw player
     s.blit(player.image, player.draw_position())
@@ -60,10 +69,11 @@ while r:
     for bound in player.bounds:        
         pygame.draw.rect(s, (250,150,0), bound)
     
-    lines = player.debug_text.splitlines()
-    for i, l in enumerate(lines):
-        text_surface = my_font.render(l, False, (200, 200, 200))
-        s.blit(text_surface, (5,5 + 13 * i))
+    if debug_visible:
+        lines = player.debug_text.splitlines()
+        for i, l in enumerate(lines):
+            text_surface = my_font.render(l, False, (200, 200, 200))
+            s.blit(text_surface, (5,5 + 13 * i))
 
     # Update screen
     pygame.display.update()
