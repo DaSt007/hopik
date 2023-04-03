@@ -1,3 +1,4 @@
+INTRO_TEXT="Ou, pozpor na hlavu..."
 RAW_BLOCKS = [
     "3",
     "3",

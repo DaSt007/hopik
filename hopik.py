@@ -7,7 +7,7 @@ from importlib import import_module
 pygame.init()
 
 # Set screen size
-s = pygame.display.set_mode((640, 480))
+s = pygame.display.set_mode((1400, 480))
 
 # Set screen caption
 pygame.display.set_caption("Hopííík")
@@ -20,11 +20,11 @@ debug_visible = False
 debug_pressed = False
 level = 0
 level_list = [
-    "level00",
-    "level01",
-    "level02",
-    # "level03",
-    # "level04",
+    "padaaaas",
+    "levelsrovinou",
+    "leveldostansekedverim",
+    "levelpozornahlavu",
+    "levelsorlojem",
 ]
 # Game loop
 r = True

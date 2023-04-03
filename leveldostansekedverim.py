@@ -1,3 +1,5 @@
+INTRO_TEXT="Dostan se ke dveřím."
+
 RAW_BLOCKS = [
 "3                                        3",
 "3                                        3",
