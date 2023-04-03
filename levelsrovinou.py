@@ -1,4 +1,4 @@
-INTRO_TEXT="Běž"
+INTRO_TEXT="Běž!"
 RAW_BLOCKS = [
     "                                           ",    
     "                                           ",
