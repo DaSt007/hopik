@@ -1,6 +1,5 @@
 import pygame
 from settings import *
-from level import START
 from collections import deque
 
 right_animation = [
@@ -44,9 +43,10 @@ class Player(pygame.sprite.Sprite):
     
 
 
-    def __init__(self):
+    def __init__(self, start):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
+        self.start = start
 
         # Create an image of the player, this could also be an image loaded from the disk
         self.image = pygame.image.load('img/TiM.png')
@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
 
         # self.rect.left = self.rect.left + 10
         # self.rect.right = self.rect.right - 10
-        self.position = [START.x, START.y]
+        self.position = [start.x, start.y]
         self.velocity = [0, 0]
         self.bounds = []
         self.debug_text = ""
@@ -81,12 +81,16 @@ class Player(pygame.sprite.Sprite):
             images.append(img)
         return images        
 
-    def move(self, td, keys, all_sprites):
+    def move(self, td, keys, all_sprites, finish_blocks):
         self.bounds = []
 
         # Apply gravity to player's velocity
         self.velocity[1] += GRAVITY * td    
-              
+
+        finish_hits = pygame.sprite.spritecollide(self, finish_blocks, False)
+        if finish_hits:
+            return True  
+               
         # Check if player is colliding with block
         hits = pygame.sprite.spritecollide(self, all_sprites, False)
         self.debug_text += f"hits: {hits}\n"
@@ -254,7 +258,7 @@ class Player(pygame.sprite.Sprite):
                 self.velocity[0] = 0
 
         if keys[pygame.K_ESCAPE]:
-            self.position = [START.x, START.y]
+            self.position = [self.start.x, self.start.y]
             self.velocity = [0, 0]
         # Check if player is jumping
         if keys[pygame.K_UP] and move_ignore_down:
@@ -292,3 +296,4 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.images_idle.rotate(-1)
                 self.image = self.images_idle[0]
+        return False
