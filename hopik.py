@@ -1,4 +1,5 @@
 import pygame
+from time import sleep
 from settings import *
 from blocks import Block
 from player import Player
@@ -26,6 +27,27 @@ level_list = [
     "levelpozornahlavu",
     "levelsorlojem",
 ]
+
+pygame.font.init() # you have to call this at the start, 
+                # if you want to use this module.
+my_font = pygame.font.SysFont('Arial', 12)
+big_font = pygame.font.SysFont('Arial', 24)
+
+
+# show welcome screen
+s.fill((0,0,0))
+lines = WELCOME_TEXT.splitlines()
+for i, l in enumerate(lines):
+    text_surface = big_font.render(l, False, (200, 200, 200))
+    s.blit(text_surface, (50, 50 + 25 * i))
+pygame.display.update()
+while True:
+    pygame.event.get()
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        sleep(1)
+        break
+
 # Game loop
 r = True
 while r:
@@ -34,6 +56,9 @@ while r:
     BLOCKS = []
     FINISH = vec(10,10)
     START = vec(15,10)
+    INTRO_TEXT = ""
+    if hasattr(level_loader, "INTRO_TEXT"):
+        INTRO_TEXT = level_loader.INTRO_TEXT
 
     cnt_y = 0
     for row in level_loader.RAW_BLOCKS:
@@ -81,14 +106,10 @@ while r:
     for block in BLOCKS:
         Block(all_blocksprites, lefttop=block[0], rightbottom=block[1], block_type=block[2])
 
-    pygame.font.init() # you have to call this at the start, 
-                    # if you want to use this module.
-    my_font = pygame.font.SysFont('Arial', 12)
     finish_blocks = pygame.sprite.Group()
     Block(finish_blocks, lefttop=FINISH, rightbottom=vec(FINISH.x + 1,FINISH.y + 2), block_type=BLOCK_TYPE_FINISH)
 
     finish_image = pygame.image.load('img/finish7.png')
-
 
 
     # Event loop

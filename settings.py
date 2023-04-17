@@ -52,3 +52,5 @@ BLOCK_TYPE_GROUND = 1
 BLOCK_TYPE_SOLID = 2
 BLOCK_TYPE_LAVA = 3
 
+WELCOME_TEXT = "Welcome to Hopííík\nyour jumping joy"
+
