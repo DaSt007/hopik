@@ -15,8 +15,7 @@ pygame.display.set_caption("Hopííík")
 
 vec = pygame.math.Vector2 
 
-# Initialise clock
-clock = pygame.time.Clock()
+
 debug_visible = False
 debug_pressed = False
 level = 0
@@ -42,10 +41,13 @@ for i, l in enumerate(lines):
     s.blit(text_surface, (50, 50 + 25 * i))
 pygame.display.update()
 while True:
-    pygame.event.get()
+    
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            r = False
+        
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
-        sleep(1)
         break
 
 # Game loop
@@ -111,7 +113,9 @@ while r:
 
     finish_image = pygame.image.load('img/finish7.png')
 
-
+    # Initialise clock
+    clock = pygame.time.Clock()
+    
     # Event loop
     while r:
         # Make sure game doesn't run at more than 60 frames per second
@@ -159,6 +163,6 @@ while r:
 
         # Update screen
         pygame.display.update()
-
+        
 # Quit pygame
 pygame.quit()
